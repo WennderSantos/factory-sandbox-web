@@ -1,7 +1,7 @@
 """Writes one statement line in the form the ledger export uses."""
 
 import re
-from decimal import Decimal, InvalidOperation
+from decimal import ROUND_HALF_EVEN, Decimal, InvalidOperation
 
 from ledger_client.statement import KINDS, StatementLine
 
@@ -26,7 +26,7 @@ def format_line(line: StatementLine) -> str:
     if not line.amount.is_finite() or line.amount <= 0:
         raise ValueError("amount must be above zero")
     try:
-        amount = line.amount.quantize(_CENTS)
+        amount = line.amount.quantize(_CENTS, rounding=ROUND_HALF_EVEN)
     except InvalidOperation as error:
         raise ValueError("amount is too large") from error
     if amount != line.amount:

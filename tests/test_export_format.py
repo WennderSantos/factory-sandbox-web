@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import ROUND_CEILING, ROUND_UP, Decimal, localcontext
 
 import pytest
 
@@ -63,3 +63,13 @@ def test_an_amount_too_large_for_the_decimal_context_raises_value_error():
 def test_ids_with_surrounding_whitespace_are_refused(bad):
     with pytest.raises(ValueError):
         format_line(StatementLine(ORG, bad, "CREDIT", Decimal("1.00"), "x"))
+
+
+@pytest.mark.parametrize("rounding", [ROUND_UP, ROUND_CEILING])
+def test_the_line_does_not_depend_on_the_ambient_rounding(rounding):
+    line = StatementLine(ORG, "acc-1", "CREDIT", Decimal("10.5"), "x")
+    with localcontext() as context:
+        context.rounding = rounding
+        assert format_line(line) == "org-1;acc-1;CREDIT;10.50;x"
+        with pytest.raises(ValueError):
+            format_line(StatementLine(ORG, "acc-1", "CREDIT", Decimal("1.001"), "x"))
