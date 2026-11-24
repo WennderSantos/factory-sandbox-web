@@ -1,0 +1,9 @@
+[project]
+name = "ledger-client"
+version = "0.1.0"
+description = "Reads the statement export of the sandbox ledger."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

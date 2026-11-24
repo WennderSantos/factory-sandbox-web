@@ -1,0 +1,25 @@
+name: deploy
+
+# A stand-in for a real deploy. It runs on every merge to main, takes a little while, and can be made to fail
+# by putting the word DEPLOY_FAILS in the merge commit message.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Roll out
+        run: |
+          echo "Deploying ${GITHUB_SHA}"
+          sleep 25
+          if git log -1 --format=%B | grep -q DEPLOY_FAILS; then
+            echo "The new version is unhealthy"
+            exit 1
+          fi
+          echo "Healthy"
