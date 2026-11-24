@@ -21,6 +21,7 @@ def test_amount_keeps_two_places():
     assert parse_statement(format_line(line), ORG)[0].amount.as_tuple().exponent == -2
 
 
+# "\r\n" gives two spaces: the Java export replaces each line-break character with one space.
 @pytest.mark.parametrize("description, expected", [
     ("", ""), ("  ", ""), ("a;b", "a b"), ("a\nb", "a b"), ("a\r\nb", "a  b"),
 ])

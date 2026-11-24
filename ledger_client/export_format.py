@@ -19,12 +19,8 @@ def _field(name: str, value: str) -> str:
 
 
 def format_line(line: StatementLine) -> str:
-    """Return the line as `organization_id;account_id;kind;amount;description`, as ExportAccountStatementService writes it.
-
-    The amount has two decimal places, a blank description is empty, and each `;` or line break in the
-    description becomes one space. Like the Java ledger entry, it refuses an amount that is not above zero or
-    has more than two decimal places, an unknown kind, and an id or kind holding `;` or a line break.
-    """
+    """Return the line as organizationId;accountId;kind;amount;description, as ExportAccountStatementService writes it."""
+    # Refusals below (ids, kind, amount) go beyond the Java export; they only keep the line parseable.
     if line.kind not in KINDS:
         raise ValueError(f"unknown kind {line.kind!r}")
     if not line.amount.is_finite() or line.amount <= 0:
