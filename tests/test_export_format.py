@@ -50,3 +50,15 @@ def test_unicode_line_breaks_in_description_round_trip(sep):
     line = StatementLine(ORG, "acc-1", "CREDIT", Decimal("1.00"), "a b")
     text = format_line(StatementLine(ORG, "acc-1", "CREDIT", Decimal("1.00"), f"a{sep}b"))
     assert parse_statement(text, ORG) == [line]
+
+
+def test_an_amount_too_large_for_the_decimal_context_raises_value_error():
+    line = StatementLine(ORG, "acc-1", "CREDIT", Decimal("1E+40"), "x")
+    with pytest.raises(ValueError):
+        format_line(line)
+
+
+@pytest.mark.parametrize("bad", [" acc-1", "acc-1 "])
+def test_ids_with_surrounding_whitespace_are_refused(bad):
+    with pytest.raises(ValueError):
+        format_line(StatementLine(ORG, bad, "CREDIT", Decimal("1.00"), "x"))
