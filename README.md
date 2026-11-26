@@ -4,7 +4,6 @@ A tiny Python package used to try out a software factory on a second repository.
 the ledger in `WennderSantos/factory-sandbox` and turns it into Python values a web page could show.
 
 Nothing here is real. There are no customers, no money and no secrets.
-
 This sandbox is owned by Wennder Santos.
 
 ## Layout
