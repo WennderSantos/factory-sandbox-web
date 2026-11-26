@@ -5,6 +5,8 @@ the ledger in `WennderSantos/factory-sandbox` and turns it into Python values a 
 
 Nothing here is real. There are no customers, no money and no secrets.
 
+This sandbox is owned by Wennder Santos.
+
 ## Layout
 
 - `ledger_client/`: the package. `statement.py` parses one exported statement.
